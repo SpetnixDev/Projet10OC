@@ -32,13 +32,27 @@
 								<p>Titre : <b>${book.title} - </b>Auteur : <b>${book.author}</b></p>
 								<p>Publié le <b>${book.releaseDate}</b></p>
 								<p>Il reste <b>${book.availableCopies}</b> copie(s) disponible(s) sur <b>${book.totalCopies}</b></p>
+
+                                <c:if test="${not empty sessionScope.user}">
+                                    <c:if test="${book.reservable}">
+                                        <hr />
+
+                                        <div class="d-flex align-items-center">
+                                            <button type="submit" class="btn btn-primary my-1 me-2" onclick="reserveBook(${book.id})">Réserver</button>
+
+                                            <p class="mb-0"><b><c:out value="${book.reservations.size()}" /></b> en file d'attente</p>
+                                        </div>
+                                    </c:if>
+                                </c:if>
 							</div>
 						</c:forEach>
 					</div>
 				</div>
 			</div>
 		</div>
-		
+
+		<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script src="js/script.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 	</body>
 </html>

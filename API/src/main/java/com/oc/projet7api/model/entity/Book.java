@@ -1,12 +1,9 @@
 package com.oc.projet7api.model.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -24,4 +21,16 @@ public class Book {
 	
 	private int totalCopies;
 	private int availableCopies;
+
+	@OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OrderBy("position ASC")
+	private List<Reservation> reservations;
+
+	@Transient
+	private boolean reservable;
+
+	@PostLoad
+	public void calculateReservable() {
+		this.reservable = reservations.size() < totalCopies * 2 && availableCopies == 0;
+	}
 }

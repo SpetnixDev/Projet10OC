@@ -17,14 +17,17 @@ public class BookService {
 	private WebClient webClient;
 	
 	public Mono<List<Book>> getAllBooks() {
-		return webClient.get().uri("/books").retrieve().bodyToMono(new ParameterizedTypeReference<List<Book>>(){});
+		return webClient.get().uri("/books").retrieve().bodyToMono(new ParameterizedTypeReference<>() {
+        });
 	}
 	
 	public Mono<List<Book>> getBooksByKeywords(List<String> keywords) {
-		return webClient.get().uri(uriBuilder -> uriBuilder.path("/books/search").queryParam("keywords", keywords).build()).retrieve().bodyToMono(new ParameterizedTypeReference<List<Book>>(){});
+		return webClient.get().uri(uriBuilder -> uriBuilder.path("/books/search").queryParam("keywords", keywords).build()).retrieve().bodyToMono(new ParameterizedTypeReference<>() {
+        });
 	}
 	
 	public Mono<List<Book>> getLastBooksAdded() {
-		return webClient.get().uri("/books/last").retrieve().bodyToMono(new ParameterizedTypeReference<List<Book>>(){});
+		return webClient.get().uri("/books/last").retrieve().bodyToMono(new ParameterizedTypeReference<>() {
+        });
 	}
 }

@@ -1,6 +1,7 @@
 package com.oc.projet7app.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import lombok.Data;
 
@@ -15,4 +16,8 @@ public class Book {
 	
 	private int totalCopies;
 	private int availableCopies;
+
+	private List<Reservation> reservations;
+
+	public boolean reservable;
 }

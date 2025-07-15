@@ -13,4 +13,6 @@ public class User {
 	private String lastName;
 	
 	private List<Loan> loans;
+
+	private List<Reservation> reservations;
 }

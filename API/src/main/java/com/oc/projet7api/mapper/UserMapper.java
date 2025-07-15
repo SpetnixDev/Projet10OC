@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.oc.projet7api.model.dto.LoanUserResponseDTO;
+import com.oc.projet7api.model.dto.ReservationProjection;
 import com.oc.projet7api.model.dto.UserDTO;
 import com.oc.projet7api.model.dto.UserResponseDTO;
 import com.oc.projet7api.model.entity.Loan;
+import com.oc.projet7api.model.entity.Reservation;
 import com.oc.projet7api.model.entity.User;
 
 public class UserMapper {
-	public static UserResponseDTO toResponseDTO(User user, List<Loan> loans) {
+	public static UserResponseDTO toResponseDTO(User user, List<Loan> loans, List<ReservationProjection> reservations) {
 		UserResponseDTO dto = new UserResponseDTO();
 		
 		dto.setId(user.getId());
@@ -25,6 +27,7 @@ public class UserMapper {
 		}
 		
 		dto.setLoans(responseLoans);
+		dto.setReservations(reservations);
 		
 		return dto;
 	}

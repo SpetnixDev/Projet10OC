@@ -14,4 +14,6 @@ public class UserResponseDTO {
 	private String lastName;
 	
 	private List<LoanUserResponseDTO> loans;
+
+	private List<ReservationProjection> reservations;
 }
