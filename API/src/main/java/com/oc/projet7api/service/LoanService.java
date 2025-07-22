@@ -56,7 +56,11 @@ public class LoanService {
 	public LoanUserResponseDTO extend(Long id) {
 		Loan loan = loanRepository.findById(id).orElseThrow(() -> new RuntimeException("Loan not found"));
 
-		if (loan.getReturnDate().isAfter(LocalDate.now())) {
+		if (loan.isExtended()) {
+			throw new RuntimeException("Un prêt ne peut pas être prolongé plus d'une fois");
+		}
+
+		if (loan.getReturnDate().isBefore(LocalDate.now())) {
 			throw new RuntimeException("Un prêt ne peut pas être prolongé après la date de retour");
 		}
 		
