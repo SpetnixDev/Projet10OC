@@ -4,4 +4,13 @@
     <option name="defaultUnitInitialized" value="true" />
     <option name="renamerInitialized" value="true" />
   </component>
+  <component name="PersistenceUnitSettings">
+    <persistence-units>
+      <persistence-unit moduleName="projet7api" name="Default">
+        <packages>
+          <package value="com.oc.projet7api" />
+        </packages>
+      </persistence-unit>
+    </persistence-units>
+  </component>
 </project>
