@@ -2,8 +2,12 @@ package com.oc.projet7api.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.oc.projet7api.model.entity.Reservation;
+import com.oc.projet7api.repository.ReservationRepository;
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +33,12 @@ public class LoanService {
 	
 	@Autowired
 	private BookRepository bookRepository;
+
+	@Autowired
+	private ReservationService reservationService;
+
+	@Autowired
+	private MailService mailService;
 	
 	public LoanUserResponseDTO findById(long id) {
 		Loan loan = loanRepository.findById(id).orElseThrow(() -> new RuntimeException("Loan not found"));
@@ -84,6 +94,16 @@ public class LoanService {
 	public LoanUserResponseDTO completeLoan(Long id) {
 		Loan loan = loanRepository.findById(id).orElseThrow(() -> new RuntimeException("Loan not found"));
 		Book book = loan.getBook();
+
+		Optional<Reservation> reservation = reservationService.findFirstByBookId(book.getId());
+
+        reservation.ifPresent(value -> {
+            try {
+                mailService.sendAvailableBookEmail(value);
+            } catch (MessagingException e) {
+                throw new RuntimeException(e);
+            }
+        });
 		
 		if (!loan.isReturned()) {
 			loan.setReturned(true);

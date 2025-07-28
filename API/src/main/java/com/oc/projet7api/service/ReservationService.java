@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class ReservationService {
@@ -83,5 +85,9 @@ public class ReservationService {
                         reservationRepository.save(res);
                     }
                 });
+    }
+
+    public Optional<Reservation> findFirstByBookId(Long id) {
+        return reservationRepository.findFirstByBookIdOrderByPositionAsc(id);
     }
 }

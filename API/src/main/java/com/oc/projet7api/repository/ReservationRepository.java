@@ -7,12 +7,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
     int countByBookId(Long bookId);
 
     List<Reservation> findAllByBookIdOrderByPositionAsc(Long bookId);
+
+    Optional<Reservation> findFirstByBookIdOrderByPositionAsc(Long bookId);
 
     boolean existsByBookIdAndUserId(Long bookId, Long userId);
 
