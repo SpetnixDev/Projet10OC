@@ -16,5 +16,4 @@ public class Loan {
 	
 	private boolean returned;
 	private boolean extended;
-
 }
