@@ -6,9 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.oc.projet7api.model.entity.Reservation;
-import com.oc.projet7api.repository.ReservationRepository;
 import jakarta.mail.MessagingException;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

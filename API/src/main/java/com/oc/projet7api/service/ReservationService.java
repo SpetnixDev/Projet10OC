@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.Optional;
 
 @Service
@@ -89,5 +90,12 @@ public class ReservationService {
 
     public Optional<Reservation> findFirstByBookId(Long id) {
         return reservationRepository.findFirstByBookIdOrderByPositionAsc(id);
+    }
+
+    public void updateReservationNotification(Long id) {
+        reservationRepository.findById(id).ifPresent(reservation -> {
+            reservation.setNotified(Instant.now());
+            reservationRepository.save(reservation);
+        });
     }
 }

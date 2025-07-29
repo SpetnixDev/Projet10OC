@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.Instant;
+
 @Entity
 @Table(name = "reservations")
 @Data
@@ -22,4 +24,6 @@ public class Reservation {
     private Book book;
 
     private int position;
+
+    private Instant notified;
 }
