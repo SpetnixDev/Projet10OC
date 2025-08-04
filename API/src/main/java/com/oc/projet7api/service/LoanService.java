@@ -55,6 +55,14 @@ public class LoanService {
 
 	public LoanUserResponseDTO extend(Long id) {
 		Loan loan = loanRepository.findById(id).orElseThrow(() -> new RuntimeException("Loan not found"));
+
+		if (loan.isExtended()) {
+			throw new RuntimeException("Un prêt ne peut pas être prolongé plus d'une fois");
+		}
+
+		if (loan.getReturnDate().isBefore(LocalDate.now())) {
+			throw new RuntimeException("Un prêt ne peut pas être prolongé après la date de retour");
+		}
 		
 		loan.extend();
 		
@@ -64,7 +72,7 @@ public class LoanService {
 	public List<LoanResponseDTO> getOverdueLoans() {
 		LocalDate today = LocalDate.now();
 		
-		return loanRepository.findOverdueReservations(today).stream().map(loan -> LoanMapper.toResponseDTO(loan)).collect(Collectors.toList());
+		return loanRepository.findOverdueReservations(today).stream().map(LoanMapper::toResponseDTO).collect(Collectors.toList());
 	}
 	
 	public void delete(long id) {
