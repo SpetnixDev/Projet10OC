@@ -16,4 +16,8 @@ public class Loan {
 	
 	private boolean returned;
 	private boolean extended;
+
+	public boolean isOverdue() {
+		return !returned && LocalDate.now().isAfter(returnDate);
+	}
 }

@@ -34,13 +34,19 @@
 							<p class="my-1">A retourner le : <b>${loan.returnDate}</b></p>
 							
 							<c:choose>
-								<c:when test="${loan.extended == false}">
-									<button type="submit" class="btn btn-primary my-1" onclick="extendLoan(${loan.id})">Prolonger le prêt</button>
-								</c:when>
-							
-								<c:otherwise>
-									<p class="text-primary my-1">Vous avez déjà prolongé ce prêt</p>
-								</c:otherwise>
+								<c:when test="${loan.extended == false && not loan.overdue}">
+                                    <button type="submit" class="btn btn-primary my-1" onclick="extendLoan(${loan.id})">Prolonger le prêt</button>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:choose>
+                                        <c:when test="${loan.overdue}">
+                                            <p class="text-danger my-1">Ce prêt ne peut pas être prolongé car il est en retard.</p>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <p class="text-primary my-1">Vous avez déjà prolongé ce prêt.</p>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:otherwise>
 							</c:choose>
 						</div>
 					</c:forEach>
