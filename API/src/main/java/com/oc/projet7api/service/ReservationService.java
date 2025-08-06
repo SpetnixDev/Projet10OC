@@ -118,14 +118,14 @@ public class ReservationService {
         for (int i = 1; i < reservations.size(); i++) {
             Reservation res = reservations.get(i);
             res.setPosition(res.getPosition() - 1);
-            reservationRepository.save(res);
-        }
 
-        if (reservations.size() > 1) {
-            Reservation newFirstReservation = reservations.get(1);
-            mailService.sendAvailableBookEmail(newFirstReservation);
-            newFirstReservation.setNotified(Instant.now());
-            reservationRepository.save(newFirstReservation);
+            if (res.getPosition() == 1) {
+                mailService.sendAvailableBookEmail(res);
+                res.setNotified(Instant.now());
+                reservationRepository.save(res);
+            }
+
+            reservationRepository.save(res);
         }
     }
 

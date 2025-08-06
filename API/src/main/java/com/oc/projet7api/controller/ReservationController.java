@@ -32,7 +32,7 @@ public class ReservationController {
     }
 
     @PutMapping("/rotate/{bookId}")
-    public void rotateReservation(@RequestBody Long bookId) throws MessagingException {
+    public void rotateReservation(@PathVariable Long bookId) throws MessagingException {
         reservationService.rotateReservations(bookId);
     }
 }

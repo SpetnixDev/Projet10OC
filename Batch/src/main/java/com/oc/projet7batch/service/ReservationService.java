@@ -21,8 +21,7 @@ public class ReservationService {
 
     public void rotate(Long bookId) {
         webClient.post()
-                .uri("/reservations/rotate")
-                .bodyValue(bookId)
+                .uri("/reservations/rotate/" + bookId)
                 .retrieve()
                 .bodyToMono(Void.class)
                 .block();

@@ -18,8 +18,10 @@ public class ReservationRotationBatch {
         List<Reservation> reservations = reservationService.getAllFirstReservations();
 
         for (Reservation reservation : reservations) {
-            if (Instant.now().isAfter(reservation.getNotified().plusSeconds(60 * 60 * 24 * 2))) {
-                reservationService.rotate(reservation.getBookId());
+            if (reservation.getNotified() != null) {
+                if (Instant.now().isAfter(reservation.getNotified().plusSeconds(60 * 60 * 24 * 2))) {
+                    reservationService.rotate(reservation.getBookId());
+                }
             }
         }
     }

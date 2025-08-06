@@ -23,7 +23,7 @@ public class MailService {
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
         helper.setTo(reservation.getUser().getEmail());
-        helper.setSubject("Livre non rendu !");
+        helper.setSubject("Livre disponible !");
         helper.setText(buildEmailContent(reservation), true);
 
         mailSender.send(message);
