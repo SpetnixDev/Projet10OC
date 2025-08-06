@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.oc.projet7api.model.entity.Reservation;
+import com.oc.projet7api.repository.ReservationRepository;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import com.oc.projet7api.model.entity.User;
 import com.oc.projet7api.repository.BookRepository;
 import com.oc.projet7api.repository.LoanRepository;
 import com.oc.projet7api.repository.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class LoanService {
@@ -36,6 +38,9 @@ public class LoanService {
 	private ReservationService reservationService;
 
 	@Autowired
+	private ReservationRepository reservationRepository;
+
+	@Autowired
 	private MailService mailService;
 	
 	public LoanUserResponseDTO findById(long id) {
@@ -44,6 +49,7 @@ public class LoanService {
 		return LoanMapper.toUserResponseDTO(loan);
 	}
 
+	@Transactional
 	public LoanUserResponseDTO create(LoanDTO loanDto) {
 		Loan loan = new Loan();
 		
@@ -58,6 +64,9 @@ public class LoanService {
 		
 		book.setAvailableCopies(book.getAvailableCopies() - 1);
 	    bookRepository.save(book);
+
+		Optional<Reservation> reservation = reservationRepository.findByBookIdAndUserId(book.getId(), user.getId());
+		reservation.ifPresent(value -> reservationService.cancelReservation(value.getId()));
 		
 		return LoanMapper.toUserResponseDTO(loanRepository.save(loan));
 	}
@@ -88,7 +97,8 @@ public class LoanService {
 	    
 		loanRepository.deleteById(id);
 	}
-	
+
+	@Transactional
 	public LoanUserResponseDTO completeLoan(Long id) {
 		Loan loan = loanRepository.findById(id).orElseThrow(() -> new RuntimeException("Loan not found"));
 		Book book = loan.getBook();

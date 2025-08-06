@@ -1,6 +1,5 @@
 package com.oc.projet7batch.service;
 
-import com.oc.projet7batch.model.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;

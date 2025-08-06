@@ -19,6 +19,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     boolean existsByBookIdAndUserId(Long bookId, Long userId);
 
+    Optional<Reservation> findByBookIdAndUserId(Long bookId, Long userId);
+
     @Query("""
         SELECT r.id AS id,
                b.title AS bookTitle,
