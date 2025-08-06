@@ -1,7 +1,9 @@
 package com.oc.projet7api.service;
 
+import com.oc.projet7api.mapper.ReservationMapper;
 import com.oc.projet7api.model.dto.ReservationDTO;
 import com.oc.projet7api.model.dto.ReservationProjection;
+import com.oc.projet7api.model.dto.ReservationResponseBatchDTO;
 import com.oc.projet7api.model.entity.Book;
 import com.oc.projet7api.model.entity.Reservation;
 import com.oc.projet7api.model.entity.User;
@@ -9,11 +11,13 @@ import com.oc.projet7api.repository.BookRepository;
 import com.oc.projet7api.repository.LoanRepository;
 import com.oc.projet7api.repository.ReservationRepository;
 import com.oc.projet7api.repository.UserRepository;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,6 +27,7 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final UserRepository userRepository;
     private final LoanRepository loanRepository;
+    private final MailService mailService;
 
     @Transactional
     public ReservationProjection createReservation(ReservationDTO reservationDTO) {
@@ -97,5 +102,37 @@ public class ReservationService {
             reservation.setNotified(Instant.now());
             reservationRepository.save(reservation);
         });
+    }
+
+    @Transactional
+    public void rotateReservations(Long bookId) throws MessagingException {
+        List<Reservation> reservations = reservationRepository.findAllByBookIdOrderByPositionAsc(bookId);
+
+        if (reservations.isEmpty()) {
+            return;
+        }
+
+        Reservation firstReservation = reservations.get(0);
+        reservationRepository.delete(firstReservation);
+
+        for (int i = 1; i < reservations.size(); i++) {
+            Reservation res = reservations.get(i);
+            res.setPosition(res.getPosition() - 1);
+            reservationRepository.save(res);
+        }
+
+        if (reservations.size() > 1) {
+            Reservation newFirstReservation = reservations.get(1);
+            mailService.sendAvailableBookEmail(newFirstReservation);
+            newFirstReservation.setNotified(Instant.now());
+            reservationRepository.save(newFirstReservation);
+        }
+    }
+
+    public List<ReservationResponseBatchDTO> getAllFirstReservations() {
+        return reservationRepository.findAllFirstReservations()
+                .stream()
+                .map(ReservationMapper::toResponseBatchDTO)
+                .toList();
     }
 }

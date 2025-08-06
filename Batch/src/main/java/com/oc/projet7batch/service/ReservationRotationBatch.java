@@ -1,32 +1,25 @@
 package com.oc.projet7batch.service;
 
-import com.oc.projet7batch.model.Loan;
-import jakarta.mail.MessagingException;
+import com.oc.projet7batch.model.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
 public class ReservationRotationBatch {
     @Autowired
-    private LoanService loanService;
+    private ReservationService reservationService;
 
-    @Autowired
-    private EmailService emailService;
-
-    @Scheduled(cron = "0 * * * * ?")
+    @Scheduled(cron = "0 */15 * * * ?")
     public void sendOverdueReminders() {
-        List<Loan> loans = loanService.getOverdueLoans();
+        List<Reservation> reservations = reservationService.getAllFirstReservations();
 
-        System.out.println("Starting daily batch...");
-
-        for (Loan loan : loans) {
-            try {
-                emailService.sendReminderEmail(loan);
-            } catch (MessagingException e) {
-                System.err.println("Erreur lors de l'envoi de l'email : " + e.getMessage());
+        for (Reservation reservation : reservations) {
+            if (Instant.now().isAfter(reservation.getNotified().plusSeconds(60 * 60 * 24 * 2))) {
+                reservationService.rotate(reservation.getBookId());
             }
         }
     }

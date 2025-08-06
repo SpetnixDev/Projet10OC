@@ -5,11 +5,11 @@ import lombok.Data;
 import java.time.LocalDate;
 
 public interface ReservationProjection {
-    public Long getId();
+    Long getId();
 
-    public String getBookTitle();
-    public String getBookAuthor();
+    String getBookTitle();
+    String getBookAuthor();
 
-    public LocalDate getNextAvailableCopy();
-    public int getPosition();
+    LocalDate getNextAvailableCopy();
+    int getPosition();
 }

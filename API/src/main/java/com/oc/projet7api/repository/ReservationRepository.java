@@ -46,4 +46,12 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
         WHERE r.user.id = :userId
     """)
     List<ReservationProjection> findAllByUserId(Long userId);
+
+    // This method is used to find all first reservations for each book with a query
+    @Query("""
+        SELECT r
+        FROM Reservation r
+        WHERE r.position = 1
+    """)
+    List<Reservation> findAllFirstReservations();
 }

@@ -36,28 +36,11 @@ public class EmailService {
 		);
 	}
 
-	public void sendAvailableBookEmail(Reservation reservation) throws MessagingException {
-		sendEmail(
-			reservation.getUserEmail(),
-			"Livre disponible !",
-			buildAvailableBookEmailContent(reservation),
-			true
-		);
-	}
-
 	private String buildLoanReminderEmailContent(Loan loan) {
 		return "<p>Bonjour " + loan.getUserFirstName() + " " + loan.getUserLastName() + ",</p>" +
                 "<p>Vous avez dépassé la date limite (" + loan.getReturnDate() + ") pour rendre le livre suivant :</p>" +
                 "<p><strong>" + loan.getBookTitle() + "</strong></p>" +
                 "<p>Merci de le retourner dès que possible.</p>" +
                 "<p>Cordialement,<br>Votre Bibliothèque</p>";
-	}
-
-	private String buildAvailableBookEmailContent(Reservation reservation) {
-		return "<p>Bonjour " + reservation.getUserFirstName() + " " + reservation.getUserLastName() + ",</p>" +
-				"<p>Un exemplaire d'un livre que vous avez réservé est désormais disponible pour vous :</p>" +
-				"<p><strong>" + reservation.getBookTitle() + "</strong></p>" +
-				"<p>Vous pouvez venir emprunter cet exemplaire sous 48h à partir de la date de réception de ce mail. Sinon, il deviendra réservé à la prochaine personne sur la liste d'attente.</p>" +
-				"<p>Cordialement,<br>Votre Bibliothèque</p>";
 	}
 }
