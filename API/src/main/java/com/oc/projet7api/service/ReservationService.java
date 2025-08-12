@@ -121,8 +121,7 @@ public class ReservationService {
 
             if (res.getPosition() == 1) {
                 mailService.sendAvailableBookEmail(res);
-                res.setNotified(Instant.now());
-                reservationRepository.save(res);
+                updateReservationNotification(res.getId());
             }
 
             reservationRepository.save(res);

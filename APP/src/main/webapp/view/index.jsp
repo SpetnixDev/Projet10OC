@@ -40,7 +40,8 @@
                                         <div class="d-flex align-items-center">
                                             <button type="submit" class="btn btn-primary my-1 me-2" onclick="reserveBook(${book.id})">Réserver</button>
 
-                                            <p class="mb-0"><b><c:out value="${book.reservations.size()}" /></b> en file d'attente</p>
+                                            <p class="mb-0 me-4"><b><c:out value="${book.reservations.size()}" /></b> en file d'attente.</p>
+                                            <p class="mb-0">Prochaine copie disponible : <b><c:out value="${book.nextAvailableCopy}" /></b></p>
                                         </div>
                                     </c:if>
                                 </c:if>

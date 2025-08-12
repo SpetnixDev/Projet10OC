@@ -123,4 +123,8 @@ public class LoanService {
 		
 		return LoanMapper.toUserResponseDTO(loan);
 	}
+
+	public LocalDate getNextAvailableCopy(Long bookId) {
+		return loanRepository.findNextAvailableCopy(bookId);
+	}
 }

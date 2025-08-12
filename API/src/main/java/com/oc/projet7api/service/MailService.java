@@ -14,9 +14,6 @@ public class MailService {
     @Autowired
     private JavaMailSender mailSender;
 
-    @Autowired
-    private ReservationService reservationService;
-
     @Transactional
     public void sendAvailableBookEmail(Reservation reservation) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
@@ -27,7 +24,6 @@ public class MailService {
         helper.setText(buildEmailContent(reservation), true);
 
         mailSender.send(message);
-        reservationService.updateReservationNotification(reservation.getId());
     }
 
     private String buildEmailContent(Reservation reservation) {

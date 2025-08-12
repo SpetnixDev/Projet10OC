@@ -18,4 +18,7 @@ public interface LoanRepository extends JpaRepository<Loan, Long> {
 	
 	@Query(value = "SELECT * FROM loans WHERE return_date < :date AND returned = false", nativeQuery = true)
     List<Loan> findOverdueReservations(LocalDate date);
+
+	@Query(value = "SELECT return_date FROM loans WHERE book_id = :bookId AND returned = false ORDER BY return_date ASC LIMIT 1", nativeQuery = true)
+    LocalDate findNextAvailableCopy(Long bookId);
 }

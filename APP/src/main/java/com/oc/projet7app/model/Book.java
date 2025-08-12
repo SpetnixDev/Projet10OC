@@ -17,6 +17,7 @@ public class Book {
 	private int totalCopies;
 	private int availableCopies;
 
+	private LocalDate nextAvailableCopy;
 	private List<Reservation> reservations;
 
 	public boolean reservable;
