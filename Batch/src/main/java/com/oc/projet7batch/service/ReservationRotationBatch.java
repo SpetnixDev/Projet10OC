@@ -14,7 +14,7 @@ public class ReservationRotationBatch {
     private ReservationService reservationService;
 
     @Scheduled(cron = "0 */15 * * * ?")
-    public void sendOverdueReminders() {
+    public void checkExpiredReservations() {
         List<Reservation> reservations = reservationService.getAllFirstReservations();
 
         for (Reservation reservation : reservations) {

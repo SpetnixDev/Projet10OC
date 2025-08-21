@@ -33,17 +33,17 @@
 								<p>Publié le <b>${book.releaseDate}</b></p>
 								<p>Il reste <b>${book.availableCopies}</b> copie(s) disponible(s) sur <b>${book.totalCopies}</b></p>
 
-                                <c:if test="${not empty sessionScope.user}">
-                                    <c:if test="${book.reservable}">
-                                        <hr />
+                                <c:if test="${book.reservable}">
+                                    <hr />
 
-                                        <div class="d-flex align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <c:if test="${not empty sessionScope.user}">
                                             <button type="submit" class="btn btn-primary my-1 me-2" onclick="reserveBook(${book.id})">Réserver</button>
+                                        </c:if>
 
-                                            <p class="mb-0 me-4"><b><c:out value="${book.reservations.size()}" /></b> en file d'attente.</p>
-                                            <p class="mb-0">Prochaine copie disponible : <b><c:out value="${book.nextAvailableCopy}" /></b></p>
-                                        </div>
-                                    </c:if>
+                                        <p class="mb-0 me-4"><b><c:out value="${book.reservations.size()}" /></b> en file d'attente.</p>
+                                        <p class="mb-0">Prochaine copie disponible : <b><c:out value="${book.nextAvailableCopy}" /></b></p>
+                                    </div>
                                 </c:if>
 							</div>
 						</c:forEach>

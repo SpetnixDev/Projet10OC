@@ -56,7 +56,7 @@ function reserveBook(bookId) {
 }
 
 function cancelReservation(reservationId) {
-    const url = `/reservation/${reservationId}`;
+    const url = `/reservations/${reservationId}`;
 
     fetch(url, {
         method: 'DELETE',
