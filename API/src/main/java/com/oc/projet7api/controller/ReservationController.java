@@ -35,4 +35,9 @@ public class ReservationController {
     public void rotateReservation(@PathVariable Long bookId) throws MessagingException {
         reservationService.rotateReservations(bookId);
     }
+
+    @GetMapping("/active")
+    public boolean userHasReservation(@RequestParam Long userId, @RequestParam Long bookId) {
+        return reservationService.userHasReservation(userId, bookId);
+    }
 }

@@ -21,4 +21,5 @@ public class Book {
 	private List<Reservation> reservations;
 
 	public boolean reservable;
+    public boolean reservableByUser = false;
 }

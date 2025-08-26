@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.nio.channels.MembershipKey;
+
 @Service
 public class ReservationService {
     @Autowired
@@ -30,5 +32,15 @@ public class ReservationService {
                 .uri("/reservations/{id}", id)
                 .retrieve()
                 .bodyToMono(Void.class);
+    }
+
+    public Mono<Boolean> userHasActiveReservation(Long userId, Long id) {
+        return webClient.get()
+                .uri(uriBuilder -> uriBuilder.path("/reservations/active")
+                        .queryParam("userId", userId)
+                        .queryParam("bookId", id)
+                        .build())
+                .retrieve()
+                .bodyToMono(Boolean.class);
     }
 }

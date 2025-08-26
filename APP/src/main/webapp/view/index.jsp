@@ -37,7 +37,7 @@
                                     <hr />
 
                                     <div class="d-flex align-items-center">
-                                        <c:if test="${not empty sessionScope.user}">
+                                        <c:if test="${not empty sessionScope.user && book.reservableByUser}">
                                             <button type="submit" class="btn btn-primary my-1 me-2" onclick="reserveBook(${book.id})">Réserver</button>
                                         </c:if>
 

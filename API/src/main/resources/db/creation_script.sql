@@ -33,6 +33,6 @@ CREATE TABLE reservations (
     book_id BIGINT NOT NULL,
     position INT NOT NULL,
     notified TIMESTAMP NULL,
-    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id),
-    CONSTRAINT fk_book FOREIGN KEY (book_id) REFERENCES books (id)
+    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    CONSTRAINT fk_book FOREIGN KEY (book_id) REFERENCES books (id) ON DELETE CASCADE
 );
