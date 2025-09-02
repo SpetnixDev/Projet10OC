@@ -75,6 +75,7 @@ public class ReservationService {
         return reservationRepository.findProjectionById(newReservation.getId());
     }
 
+    @Transactional
     public void cancelReservation(Long reservationId) {
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new RuntimeException("Réservation non trouvée"));
