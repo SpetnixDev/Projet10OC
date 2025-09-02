@@ -42,3 +42,27 @@ function extendLoan(loanId) {
     })
     .then(data => window.location.href = '/profile');
 }
+
+function reserveBook(bookId) {
+    const url = `/reservation/create/${bookId}`;
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+    .then(data => window.location.href = '/profile');
+}
+
+function cancelReservation(reservationId) {
+    const url = `/reservation/${reservationId}`;
+
+    fetch(url, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+    .then(data => window.location.href = '/profile');
+}

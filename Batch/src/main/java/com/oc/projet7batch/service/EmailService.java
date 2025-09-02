@@ -14,19 +14,28 @@ import jakarta.mail.internet.MimeMessage;
 public class EmailService {
 	@Autowired
 	private JavaMailSender mailSender;
-	
-	public void sendReminderEmail(Loan loan) throws MessagingException {
+
+	public void sendEmail(String email, String subject, String content, boolean html) throws MessagingException {
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
-		
-		helper.setTo(loan.getUserEmail());
-		helper.setSubject("Livre non rendu !");
-		helper.setText(buildEmailContent(loan), true);
-		
+
+		helper.setTo(email);
+		helper.setSubject(subject);
+		helper.setText(content, html);
+
 		mailSender.send(message);
 	}
 	
-	private String buildEmailContent(Loan loan) {
+	public void sendReminderEmail(Loan loan) throws MessagingException {
+		sendEmail(
+			loan.getUserEmail(),
+			"Livre non rendu !",
+			buildLoanReminderEmailContent(loan),
+			true
+		);
+	}
+
+	private String buildLoanReminderEmailContent(Loan loan) {
 		return "<p>Bonjour " + loan.getUserFirstName() + " " + loan.getUserLastName() + ",</p>" +
                 "<p>Vous avez dépassé la date limite (" + loan.getReturnDate() + ") pour rendre le livre suivant :</p>" +
                 "<p><strong>" + loan.getBookTitle() + "</strong></p>" +

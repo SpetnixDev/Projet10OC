@@ -56,6 +56,33 @@
 					<h3 class="text-danger text-center">Vous n'avez aucun emprunt en cours</h3>
 				</c:otherwise>
 			</c:choose>
+
+			<hr />
+
+			<c:choose>
+                <c:when test="${not empty sessionScope.user.reservations}">
+                    <h3 class="text-primary text-center">Réservations en cours</h3>
+
+                    <c:forEach var="reservation" items="${sessionScope.user.reservations}">
+                        <div class="border border-dark border-1 rounded mt-2 p-3">
+                            <p class="my-1">Titre : <b>${reservation.bookTitle}</b> - Auteur : <b>${reservation.bookAuthor}</b></p>
+
+                            <hr />
+
+                            <p class="my-1">Position dans la liste d'attente : <b>${reservation.position}</b></p>
+                            <p class="my-1">Prochain exemplaire disponible : <b>${reservation.nextAvailableCopy}</b></p>
+
+                            <hr />
+
+                            <button type="submit" class="btn btn-primary my-1" onclick="cancelReservation(${reservation.id})">Annuler la réservation</button>
+                        </div>
+                    </c:forEach>
+                </c:when>
+
+                <c:otherwise>
+                    <h3 class="text-danger text-center">Vous n'avez aucune réservation en cours</h3>
+                </c:otherwise>
+            </c:choose>
 		</div>
 		
 		<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>

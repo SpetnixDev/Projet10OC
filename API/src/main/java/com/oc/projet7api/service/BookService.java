@@ -1,7 +1,9 @@
 package com.oc.projet7api.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
+import com.oc.projet7api.model.dto.BookResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,9 @@ import com.oc.projet7api.repository.BookRepository;
 public class BookService {
 	@Autowired
 	private BookRepository bookRepository;
+
+	@Autowired
+	private LoanService loanService;
 	
 	public Book findById(Long id) {
 		return bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
@@ -25,16 +30,40 @@ public class BookService {
 		return bookRepository.save(book);
 	}
 
-	public List<Book> findAll() {
-		return bookRepository.findAll();
+	public List<BookResponseDTO> findAll() {
+		List<Book> books = bookRepository.findAll();
+
+        return books.stream()
+                .map(book -> {
+                    LocalDate nextAvailableCopy = null;
+                    if (book.isReservable()) nextAvailableCopy = loanService.getNextAvailableCopy(book.getId());
+					return BookMapper.toBookResponseDTO(book, nextAvailableCopy);
+                })
+                .toList();
 	}
 	
-	public List<Book> searchBooksByKeywords(List<String> keywords) {
-		return bookRepository.findAll(BookSpecifications.hasKeywords(keywords));
+	public List<BookResponseDTO> searchBooksByKeywords(List<String> keywords) {
+		List<Book> books = bookRepository.findAll(BookSpecifications.hasKeywords(keywords));
+
+		return books.stream()
+				.map(book -> {
+					LocalDate nextAvailableCopy = null;
+					if (book.isReservable()) nextAvailableCopy = loanService.getNextAvailableCopy(book.getId());
+					return BookMapper.toBookResponseDTO(book, nextAvailableCopy);
+				})
+				.toList();
 	}
 	
-	public List<Book> findLastBooksAdded() {
-		return bookRepository.findTop5ByOrderByIdDesc();
+	public List<BookResponseDTO> findLastBooksAdded() {
+		List<Book> books = bookRepository.findTop5ByOrderByIdDesc();
+
+		return books.stream()
+				.map(book -> {
+					LocalDate nextAvailableCopy = null;
+					if (book.isReservable()) nextAvailableCopy = loanService.getNextAvailableCopy(book.getId());
+					return BookMapper.toBookResponseDTO(book, nextAvailableCopy);
+				})
+				.toList();
 	}
 	
 	public void delete(Long id) {

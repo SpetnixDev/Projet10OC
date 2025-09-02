@@ -41,4 +41,9 @@ public class LoanController {
 	public List<LoanResponseDTO> getOverdueLoans() {
 		return loanService.getOverdueLoans();
 	}
+
+	@PutMapping("/{id}/complete")
+	public LoanUserResponseDTO complete(@PathVariable Long id) {
+		return loanService.completeLoan(id);
+	}
 }

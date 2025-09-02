@@ -2,6 +2,7 @@ package com.oc.projet7api.controller;
 
 import java.util.List;
 
+import com.oc.projet7api.model.dto.BookResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +29,7 @@ public class BookController {
 	}
 	
 	@GetMapping
-	public List<Book> findAll() {
+	public List<BookResponseDTO> findAll() {
 		return bookService.findAll();
 	}
 	
@@ -38,17 +39,17 @@ public class BookController {
 	}
 	
 	@GetMapping("/search")
-    public List<Book> searchBooks(@RequestParam List<String> keywords) {
+    public List<BookResponseDTO> searchBooks(@RequestParam List<String> keywords) {
         return bookService.searchBooksByKeywords(keywords);
     }
 	
 	@GetMapping("/last")
-	public List<Book> findLastBooksAdded() {
+	public List<BookResponseDTO> findLastBooksAdded() {
 		return bookService.findLastBooksAdded();
 	}
 	
 	@DeleteMapping("/delete")
-	public void delete(@RequestParam(required = true) Long id) {
+	public void delete(@RequestParam Long id) {
 		bookService.delete(id);
 	}
 }

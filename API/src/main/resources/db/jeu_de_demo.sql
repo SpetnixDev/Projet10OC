@@ -12,7 +12,7 @@ INSERT INTO books (title, author, release_date, total_copies, available_copies) 
 ('Le Petit Prince', 'Antoine de Saint-Exupéry', '1943-04-06', 8, 8),
 ('Les Misérables', 'Victor Hugo', '1862-01-01', 5, 5),
 ('L''Étranger', 'Albert Camus', '1942-05-01', 6, 5),
-('Madame Bovary', 'Gustave Flaubert', '1857-12-01', 4, 3),
+('Madame Bovary', 'Gustave Flaubert', '1857-12-01', 4, 0),
 ('Cyrano de Bergerac', 'Edmond Rostand', '1897-12-28', 7, 6),
 ('Notre-Dame de Paris', 'Victor Hugo', '1831-03-16', 5, 4),
 ('Candide', 'Voltaire', '1759-01-01', 3, 2),
