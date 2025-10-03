@@ -115,8 +115,9 @@ public class ReservationService {
         Reservation firstReservation = reservations.get(0);
         reservationRepository.delete(firstReservation);
 
-        for (int i = 1; i < reservations.size(); i++) {
-            Reservation res = reservations.get(i);
+        reservations = reservationRepository.findAllByBookIdOrderByPositionAsc(bookId);
+
+        for (Reservation res : reservations) {
             res.setPosition(res.getPosition() - 1);
 
             if (res.getPosition() == 1) {
