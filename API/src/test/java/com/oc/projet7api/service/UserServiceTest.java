@@ -8,6 +8,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import com.oc.projet7api.model.dto.ReservationProjection;
+import com.oc.projet7api.repository.ReservationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -34,6 +36,9 @@ class UserServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    @Mock
+    private ReservationRepository reservationRepository;
+
     @InjectMocks
     private UserService userService;
 
@@ -50,12 +55,14 @@ class UserServiceTest {
         user.setEmail("test@example.com");
 
         List<Loan> loans = Collections.singletonList(new Loan());
+        List<ReservationProjection> reservations = Collections.emptyList();
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(loanRepository.findAllByUserId(userId)).thenReturn(loans);
+        when(reservationRepository.findAllByUserId(userId)).thenReturn(reservations);
 
         try (var mockedUserMapper = mockStatic(UserMapper.class)) {
-            mockedUserMapper.when(() -> UserMapper.toResponseDTO(user, loans)).thenReturn(new UserResponseDTO());
+            mockedUserMapper.when(() -> UserMapper.toResponseDTO(user, loans, reservations)).thenReturn(new UserResponseDTO());
 
             UserResponseDTO result = userService.findById(userId);
 
@@ -90,7 +97,7 @@ class UserServiceTest {
 
         try (var mockedUserMapper = mockStatic(UserMapper.class)) {
             mockedUserMapper.when(() -> UserMapper.toUser(userDto)).thenReturn(user);
-            mockedUserMapper.when(() -> UserMapper.toResponseDTO(user, new ArrayList<>())).thenReturn(new UserResponseDTO());
+            mockedUserMapper.when(() -> UserMapper.toResponseDTO(user, new ArrayList<>(), new ArrayList<>())).thenReturn(new UserResponseDTO());
 
             UserResponseDTO result = userService.save(userDto);
 
@@ -108,7 +115,7 @@ class UserServiceTest {
         when(userRepository.findAll()).thenReturn(users);
 
         try (var mockedUserMapper = mockStatic(UserMapper.class)) {
-            mockedUserMapper.when(() -> UserMapper.toResponseDTO(user, new ArrayList<>())).thenReturn(new UserResponseDTO());
+            mockedUserMapper.when(() -> UserMapper.toResponseDTO(user, new ArrayList<>(), new ArrayList<>())).thenReturn(new UserResponseDTO());
 
             List<UserResponseDTO> result = userService.findAll();
 

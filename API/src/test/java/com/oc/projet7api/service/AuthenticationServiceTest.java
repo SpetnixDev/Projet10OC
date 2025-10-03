@@ -6,7 +6,9 @@ import static org.mockito.Mockito.*;
 import java.util.Collections;
 import java.util.List;
 
+import com.oc.projet7api.model.dto.ReservationProjection;
 import com.oc.projet7api.model.entity.Book;
+import com.oc.projet7api.repository.ReservationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -33,6 +35,9 @@ class AuthenticationServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    @Mock
+    private ReservationRepository reservationRepository;
+
     @InjectMocks
     private AuthenticationService authenticationService;
 
@@ -58,13 +63,15 @@ class AuthenticationServiceTest {
         loan.setBook(book);
 
         List<Loan> loans = Collections.singletonList(loan);
+        List<ReservationProjection> reservations = Collections.emptyList();
 
         try (var mockedUserMapper = mockStatic(UserMapper.class)) {
             when(userRepository.findByEmail(userLoginDTO.getEmail())).thenReturn(user);
             when(passwordEncoder.matches(userLoginDTO.getPassword(), user.getPassword())).thenReturn(true);
             when(loanRepository.findAllByUserId(user.getId())).thenReturn(loans);
+            when(reservationRepository.findAllByUserId(user.getId())).thenReturn(reservations);
 
-            mockedUserMapper.when(() -> UserMapper.toResponseDTO(user, loans)).thenReturn(new UserResponseDTO());
+            mockedUserMapper.when(() -> UserMapper.toResponseDTO(user, loans, reservations)).thenReturn(new UserResponseDTO());
 
             UserResponseDTO result = authenticationService.authenticate(userLoginDTO);
 

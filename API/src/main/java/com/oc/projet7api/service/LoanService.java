@@ -116,6 +116,7 @@ public class LoanService {
         reservation.ifPresent(value -> {
             try {
                 mailService.sendAvailableBookEmail(value);
+                reservationService.updateReservationNotification(reservation.get().getId());
             } catch (MessagingException e) {
                 throw new RuntimeException(e);
             }
